@@ -50,7 +50,7 @@ typedef long                    int32;
 typedef uint32                  dword;
 
 typedef int32                   fixed;
-typedef char                    boolean;
+typedef unsigned char           boolean;
 typedef float                   float32;
 typedef double                  float64;
 typedef long double             float128;
