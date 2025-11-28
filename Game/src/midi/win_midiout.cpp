@@ -865,9 +865,9 @@ static int music_loopflag = MUSIC_PlayOnce;
 static Windows_MidiOut *midi_device = NULL;
 
 extern void musdebug(const char *fmt, ...);
-extern void init_debugging(void);
+static void init_debugging(void);
 extern void setWarningMessage(const char *msg);
-extern void setErrorMessage(const char *msg);
+static void setErrorMessage(const char *msg);
 extern int MUSIC_ErrorCode;
 #define __FX_TRUE  (1 == 1)
 #define __FX_FALSE (!__FX_TRUE)
