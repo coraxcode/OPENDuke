@@ -8,5 +8,10 @@ In Environment Variables, click on Path under System Variables \ New. In both th
 
 Open the Run dialog (Win+R), type cmd, navigate to the OPENDuke directory where the Makefile is located, and compile with the command mingw32-make.
 
-NOTE: You can always clean and recompile by using the mingw32-make clean command.
-NOTE 2: On Windows, you can search for lines of code using the command findstr /S /N /C:"command-line" *.c *.cpp *.h.
+After compiling, a bin directory will be generated with the executable duke3d_w32.exe. Add the SDL.dll from the lib\sdl directory and the SDL_mixer.dll from the lib\sdl_mixer directory to the bin directory where the executable is located, along with the duke3d.grp file you have.
+
+NOTE: The default Makefile compiles with SDL1. The Makefile-SDL2 is not compiling correctly yet because it is necessary to make changes to the code!
+
+NOTE 2: You can always clean and recompile by using the mingw32-make clean command.
+
+NOTE 3: On Windows, you can search for lines of code using the command findstr /S /N /C:"command-line" *.c *.cpp *.h.
