@@ -10,6 +10,15 @@ Open the Run dialog (Win+R), type cmd, navigate to the OPENDuke directory where 
 
 After compiling, a bin directory will be generated with the executable duke3d_w32.exe. Add the SDL.dll from the lib\sdl directory and the SDL_mixer.dll from the lib\sdl_mixer directory to the bin directory where the executable is located, along with the duke3d.grp file you have.
 
+About the generated executable:
+If you want to distribute the GCC-compiled executable duke3d_w32.exe, add the following GCC DLLs to the executable's bin directory:
+
+libgcc_s_dw2-1.dll
+libwinpthread-1.dll
+libstdc++-6.dll
+
+This will allow the executable to run on any machine that does not have GCC installed.
+
 NOTE: The default Makefile compiles with SDL1. The Makefile-SDL2 is not compiling correctly yet because it is necessary to make changes to the code!
 
 NOTE 2: You can always clean and recompile by using the mingw32-make clean command.
