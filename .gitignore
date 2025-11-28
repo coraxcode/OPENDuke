@@ -1,8 +1,0 @@
-bin/*
-*/DebugVC7/*
-*/ReleaseVC7/*
-*.obj
-*.ncb
-*.suo
-*.xml
-*.user
