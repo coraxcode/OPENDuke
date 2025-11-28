@@ -143,7 +143,7 @@ __inline void s_buffer1(int iOff,double iVal, double *ptr)                // set
 	*(ptr+iOff)=iVal;
 }
 
-__inline double MixREVERBLeft(double INPUT_SAMPLE_L, double INPUT_SAMPLE_R, double *ptr)
+static __inline double MixREVERBLeft(double INPUT_SAMPLE_L, double INPUT_SAMPLE_R, double *ptr)
 {
 	double ACC0,ACC1,FB_A0,FB_A1,FB_B0,FB_B1;
 	
@@ -191,7 +191,7 @@ __inline double MixREVERBLeft(double INPUT_SAMPLE_L, double INPUT_SAMPLE_R, doub
 	return (double)iRVBLeft;
 }
 
-__inline double MixREVERBRight(void)
+static __inline double MixREVERBRight(void)
 {
 	return (double)iRVBRight;
 }
