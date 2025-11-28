@@ -7,7 +7,7 @@
 // Required for certain cvars
 #include "types.h"
 #include "build.h"
-#include "funct.h"
+// #include "funct.h"
 
 //We need a way to access duke to change the level
 #include "duke3d.h"
