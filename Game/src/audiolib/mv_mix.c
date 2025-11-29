@@ -1,5 +1,12 @@
 #include "multivoc.h"
 
+/* Map MSVC-style _inline to GCC-compatible static inline */
+#ifndef _MSC_VER
+    #ifndef _inline
+        #define _inline static inline
+    #endif
+#endif
+
 extern char  *MV_MixDestination;
 extern unsigned long MV_MixPosition;
 extern int *MV_GLast, *MV_GPos, *MV_GVal;
