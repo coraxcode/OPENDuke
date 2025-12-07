@@ -22,6 +22,9 @@
 
 #include "../../Game/src/cvar_defs.h"
 
+void Error(int exitcode, const char *fmt, ...);  // External error handler
+int SafeFileExists(const char *filename);          // Check if file exists
+
 
 #if (defined USE_PHYSICSFS)
 #include "physfs.h"
