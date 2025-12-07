@@ -267,6 +267,11 @@ extern long setvlinebpl(long);
 
 #include "cache1d.h"
 
+// Prototypes for external functions used in this module
+void Error(int exitcode, const char *fmt, ...);  // External error handler
+void vscrn(void);                                // Screen redraw function
+
+
 
 /*
  * !!! remove the surface_end checks, for speed's sake. They are a
@@ -1186,7 +1191,7 @@ void Setup_StableNetworking()
 void _platform_init(int argc, char **argv, const char *title, const char *icon)
 {
     int i;
-	long long timeElapsed;
+	LARGE_INTEGER timeElapsed;
 	char dummyString[4096];
 
     _argc = argc;
@@ -1194,7 +1199,7 @@ void _platform_init(int argc, char **argv, const char *title, const char *icon)
 
 	// FIX_00061: "ERROR: Two players have the same random ID" too frequent cuz of internet windows times
     QueryPerformanceCounter(&timeElapsed);
-	srand(timeElapsed&0xFFFFFFFF);
+	srand((unsigned int)(timeElapsed.QuadPart & 0xFFFFFFFF));
 
 	Setup_UnstableNetworking();
 
@@ -1847,7 +1852,7 @@ int VBE_setPalette(long start, long num, char *palettebuffer)
 	if(r_colorfix==1) 
 		nextpage();//After the color fix, SDL_SetColors() requires an explicit call to blit the page -Radar
 	
-	return;
+	return 1;
 } /* VBE_setPalette */
 
 
