@@ -23,6 +23,8 @@
 
 #include "pragmas.h"
 
+void Error(int exitcode, const char *fmt, ...);  // External error handler
+
 #define MAXPLAYERS 16
 #define BAKSIZ 16384
 #define SIMULATEERRORS 0
@@ -125,9 +127,12 @@ enum ECommitCMDs
 
 gcomtype *init_network_transport(char **ARGV, int argpos);
 void deinit_network_transport(gcomtype *gcom);
+long getcrc(char *buffer, short bufleng);  // CRC selector (unstable/stable)
 //void unstable_callcommit(void);
 void dosendpackets(long other);
-
+// Prototypes to avoid implicit function declarations
+void sendpacket(long other, char *bufptr, long messleng);
+void callcommit(void);  // Commit routine implemented later in this file
 
 void unstable_initcrc(void)
 {
@@ -464,7 +469,7 @@ short unstable_getpacket (short *other, char *bufptr)
 				{
 								 /* GOOD! Take second half of double packet */
 #if (PRINTERRORS)
-					printf("\n%ld-%ld .û ",gcom->buffer[0],(gcom->buffer[0]+1)&255);
+					printf("\n%ld-%ld .  ",gcom->buffer[0],(gcom->buffer[0]+1)&255);
 #endif
 					messleng = ((long)gcom->buffer[3]) + (((long)gcom->buffer[4])<<8);
 					lastpacketleng = gcom->numbytes-7-messleng;
@@ -484,7 +489,7 @@ short unstable_getpacket (short *other, char *bufptr)
 	if ((gcom->buffer[1]&128) == 0)           /* Single packet */
 	{
 #if (PRINTERRORS)
-		printf("\n%ld û  ",gcom->buffer[0]);
+		printf("\n%ld    ",gcom->buffer[0]);
 #endif
 
 		messleng = gcom->numbytes-5;
@@ -497,7 +502,7 @@ short unstable_getpacket (short *other, char *bufptr)
 
 														 /* Double packet */
 #if (PRINTERRORS)
-	printf("\n%ld-%ld ûû ",gcom->buffer[0],(gcom->buffer[0]+1)&255);
+	printf("\n%ld-%ld    ",gcom->buffer[0],(gcom->buffer[0]+1)&255);
 #endif
 
 	messleng = ((long)gcom->buffer[3]) + (((long)gcom->buffer[4])<<8);
