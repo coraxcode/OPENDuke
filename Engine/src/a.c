@@ -41,7 +41,11 @@ void sethlinesizes(long i1, long i2, long i3)
 } /* sethlinesizes */
 
 static unsigned char* pal_eax;
-void setuphlineasm4(long i1, long i2) { }
+void setuphlineasm4(long i1, long i2)
+{
+   (void)i1; // Prevent unused parameter warning
+   (void)i2; // Prevent unused parameter warning
+}
 void setpalookupaddress(unsigned char *i1) { pal_eax = i1; }
 
 void hlineasm4(long _count, unsigned long unused_source, long _shade, unsigned long _i4, unsigned long _i5, long i6)
