@@ -38,6 +38,8 @@
 
 #include "engine.h"
 
+void Error(int exitcode, const char *fmt, ...);  // External error handler
+
 long stereowidth = 23040, stereopixelwidth = 28, ostereopixelwidth = -1;
 volatile long stereomode = 0, visualpage, activepage, whiteband, blackband;
 volatile char oa1, o3c2, ortca, ortcb, overtbits, laststereoint;
@@ -306,7 +308,9 @@ static __inline long nsqrtasm(unsigned long param)
 
 static __inline long krecipasm(long i)
 { // Ken did this
-	float f = (float)i; i = *(long *)&f;
+	union { float f; long i; } u;   // Use union to avoid strict aliasing
+	u.f = (float)i;
+	i = u.i;
 	return((reciptable[(i>>12)&2047]>>(((i-0x3f800000)>>23)&31))^(i>>31));
 }
 
@@ -3245,7 +3249,18 @@ static void dorotatesprite (long sx, long sy, long z, short a, short picnum,
 	*/
 	if((r_hudaspect == 2 && xdim > 800) || r_hudaspect == 1)
 	{
-		dorotspr_handle_bit2(&sx, &sy, &z, dastat, cx1 + cx2, cy1 + cy2, &ouryxaspect, &ourxyaspect);
+	    int32_t sx32 = sx;  // Temporary 32-bit copy of sx
+	    int32_t sy32 = sy;  // Temporary 32-bit copy of sy
+	    int32_t z32  = z;   // Temporary 32-bit copy of z
+
+	    dorotspr_handle_bit2(&sx32, &sy32, &z32,
+				 dastat,
+				 cx1 + cx2, cy1 + cy2,
+				 &ouryxaspect, &ourxyaspect);
+					
+	    sx = sx32;          // Copy back results to original longs
+	    sy = sy32;
+            z  = z32;
 	}
 	else
 	{
@@ -3326,12 +3341,12 @@ static void dorotatesprite (long sx, long sy, long z, short a, short picnum,
 			if (dax2 > dax1)
 			{
 				yplc = y1 + mulscale16((dax1<<16)+65535-x1,yinc);
-				qinterpolatedown16short((long *)(&uplc[dax1]),dax2-dax1,yplc,yinc);
+				qinterpolatedown16short((long)&uplc[dax1],dax2-dax1,yplc,yinc);
 			}
 			else
 			{
 				yplc = y2 + mulscale16((dax2<<16)+65535-x2,yinc);
-				qinterpolatedown16short((long *)(&dplc[dax2]),dax1-dax2,yplc,yinc);
+				qinterpolatedown16short((long)&dplc[dax2],dax1-dax2,yplc,yinc);
 			}
 		}
 		nextv = v;
@@ -4219,9 +4234,9 @@ static void ceilspritehline (long x2, long y)
 	long x1, v, bx, by;
 
 	/*
-	 * x = x1 + (x2-x1)t + (y1-y2)u  ³  x = 160v
-	 * y = y1 + (y2-y1)t + (x2-x1)u  ³  y = (scrx-160)v
-	 * z = z1 = z2                   ³  z = posz + (scry-horiz)v
+	 * x = x1 + (x2-x1)t + (y1-y2)u     x = 160v
+	 * y = y1 + (y2-y1)t + (x2-x1)u     y = (scrx-160)v
+	 * z = z1 = z2                      z = posz + (scry-horiz)v
      */
 
 	x1 = lastx[y]; if (x2 < x1) return;
@@ -4691,7 +4706,7 @@ static void drawsprite (long snum)
 			globalzd = (((globalposz-z2)*globalyscale)<<8);
 		}
 
-		qinterpolatedown16((long *)&lwall[lx],rx-lx+1,linum,linuminc);
+		qinterpolatedown16((long)&lwall[lx],rx-lx+1,linum,linuminc);
 		clearbuf(&swall[lx],rx-lx+1,mulscale19(yp,xdimscale));
 
 		if ((cstat&2) == 0)
