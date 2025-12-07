@@ -5,6 +5,7 @@
 #include "pragmas.h"
 
 unsigned long getkensmessagecrc(long param) {
+    (void)param;  // Parameter currently unused, kept for compatibility
     return(0x56c764d4);
 }
 
