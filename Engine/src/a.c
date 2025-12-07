@@ -79,6 +79,7 @@ static long rmach_edx;
 static long rmach_esi;
 void setuprhlineasm4(long i1, long i2, long i3, long i4, long i5, long i6)
 {
+    (void)i6; // Mark unused parameter to avoid warning
     rmach_eax = i1;
     rmach_ebx = i2;
     rmach_ecx = i3;
@@ -116,6 +117,7 @@ static long rmmach_edx;
 static long rmmach_esi;
 void setuprmhlineasm4(long i1, long i2, long i3, long i4, long i5, long i6)
 {
+    (void)i6; // Mark unused parameter to avoid warning
     rmmach_eax = i1;
     rmmach_ebx = i2;
     rmmach_ecx = i3;
@@ -452,6 +454,7 @@ static long smach5_eax;
 static long smach_ecx;
 void setupspritevline(long i1, long i2, long i3, long i4, long i5, long i6)
 {
+    (void)i6; // Mark unused parameter to avoid warning
     spal_eax = i1;
     smach_eax = (i5<<16);
     smach2_eax = (i5>>16)+i2;
