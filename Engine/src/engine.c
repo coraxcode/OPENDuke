@@ -607,6 +607,7 @@ static void slowhline (long xr, long yp)
 static int animateoffs(short tilenum, short fakevar)
 {
 	long i, k, offs;
+        (void)fakevar;  // Parameter not used but kept for compatibility
 
 	offs = 0;
 	i = (totalclocklock>>((picanm[tilenum]>>24)&15));
@@ -1250,6 +1251,9 @@ static void maskwallscan(long x1, long x2,
 static void parascan(long dax1, long dax2, long sectnum,
                      char dastat, long bunch)
 {
+        (void)dax1;  // Unused parameter
+        (void)dax2;  // Unused parameter
+
 	sectortype *sec;
 	long j, k, l, m, n, x, z, wallnum, nextsectnum, globalhorizbak;
 	short *topptr, *botptr;
