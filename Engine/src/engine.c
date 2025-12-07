@@ -2542,7 +2542,7 @@ int loadboard(char *filename, long *daposx, long *daposy,
               long *daposz, short *daang, short *dacursectnum)
 {
     int x;
-	short fil, i, j, numsprites;
+	short fil, i, numsprites; // Removed unused variable 'j'
     sectortype *sect;
     spritetype *s;
     walltype *w;
@@ -2598,10 +2598,10 @@ int loadboard(char *filename, long *daposx, long *daposy,
 		kread16(fil,&sect->floorheinum);
 		 kread8(fil,(char *)&sect->floorshade); // Fix pointer sign warning (signed char* to char*)
 		 kread8(fil,(char *)&sect->floorpal);  // Fix pointer sign warning (unsigned char* to char*)
-		 kread8(fil,&sect->floorxpanning);
-		 kread8(fil,&sect->floorypanning);
-		 kread8(fil,&sect->visibility);
-		 kread8(fil,&sect->filler);
+		 kread8(fil,(char *)&sect->floorxpanning); // Fix pointer sign warning (unsigned char* to char*)
+		 kread8(fil,(char *)&sect->floorypanning); // Fix pointer sign warning (unsigned char* to char*)
+		 kread8(fil,(char *)&sect->visibility); // Fix pointer sign warning (unsigned char* to char*)
+		 kread8(fil,(char *)&sect->filler); // Fix pointer sign warning (unsigned char* to char*)
 		kread16(fil,&sect->lotag);
 		kread16(fil,&sect->hitag);
 		kread16(fil,&sect->extra);
@@ -2618,7 +2618,7 @@ int loadboard(char *filename, long *daposx, long *daposy,
 		kread16(fil,&w->cstat);
 		kread16(fil,&w->picnum);
 		kread16(fil,&w->overpicnum);
-		 kread8(fil,&w->shade);
+		 kread8(fil,(char *)&w->shade); // Fix pointer sign warning (signed char* to char*)
 		 kread8(fil,&w->pal);
 		 kread8(fil,&w->xrepeat);
 		 kread8(fil,&w->yrepeat);
@@ -2637,14 +2637,14 @@ int loadboard(char *filename, long *daposx, long *daposy,
 		kread32(fil,&s->z);
 		kread16(fil,&s->cstat);
 		kread16(fil,&s->picnum);
-		 kread8(fil,&s->shade);
-		 kread8(fil,&s->pal);
- 		 kread8(fil,&s->clipdist);
-		 kread8(fil,&s->filler);
-		 kread8(fil,&s->xrepeat);
-		 kread8(fil,&s->yrepeat);
-		 kread8(fil,&s->xoffset);
-		 kread8(fil,&s->yoffset);
+		 kread8(fil,(char *)&s->shade); // Fix pointer sign warning (signed char* to char*)
+		 kread8(fil,(char *)&s->pal);  // Fix pointer sign warning (unsigned char* to char*)
+ 		 kread8(fil,(char *)&s->clipdist); // Fix pointer sign warning (unsigned char* to char*)
+		 kread8(fil,(char *)&s->filler);  // Fix pointer sign warning (unsigned char* to char*) 
+		 kread8(fil,(char *)&s->xrepeat); // Fix pointer sign warning (unsigned char* to char*)
+		 kread8(fil,(char *)&s->yrepeat); // Cast to char* to match kread8 signature
+		 kread8(fil,(char *)&s->xoffset); // Cast to char* to match kread8 signature
+		 kread8(fil,(char *)&s->yoffset); // Cast to char* to match kread8 signature
 		kread16(fil,&s->sectnum);
 		kread16(fil,&s->statnum);
 		kread16(fil,&s->ang);
@@ -3699,10 +3699,11 @@ void nextpage(void)
    		for(i=permtail;i!=permhead;i=((i+1)&(MAXPERMS-1)))
    		{
    			per = &permfifo[i];
-   			if (per->pagesleft >= 130)
+   			if (per->pagesleft >= 130) {  // Only guard this draw call with the condition
    				dorotatesprite(per->sx,per->sy,per->z,per->a,per->picnum,
    									per->dashade,per->dapalnum,per->dastat,
    									per->cx1,per->cy1,per->cx2,per->cy2);
+						    }
 				if (per->pagesleft&127) per->pagesleft--;
    			if (((per->pagesleft&127) == 0) && (i == permtail))
    				permtail = ((permtail+1)&(MAXPERMS-1));
@@ -3793,6 +3794,7 @@ int loadpics(char *filename, char* gamedir)
 {
 	long offscount, localtilestart, localtileend, dasiz;
 	short fil, i, j, k;
+	(void)gamedir; // Parameter kept for compatibility but not used
 	//char fullpathartfilename[512];
 
 	strcpy(artfilename,filename);
@@ -6751,6 +6753,7 @@ int pushmove(long *x, long *y, long *z, short *sectnum,
 
 	dawalclipmask = (cliptype&65535);
 	dasprclipmask = (cliptype>>16);
+	(void)dasprclipmask; // Prevent unused variable warning (sprite clip mask only used in disabled code
 
 	k = 32;
 	dir = 1;
@@ -6938,6 +6941,7 @@ void getmousevalues(short *mousx, short *mousy, short *bstatus)
 void draw2dgrid(long posxe, long posye, short ange, long zoome, short gride)
 {
 	long i, xp1, yp1, xp2=0, yp2, tempy, templong;
+	(void)ange; // Parameter currently unused but kept for API compatibility
 	char mask;
 
 	if (gride > 0)
@@ -8404,6 +8408,7 @@ void clearallviews(long dacol)
 				clearbufbyte((void *)frameplace,imageSize,0L);
 			}
 			setactivepage(activepage);
+			/* fall through */  // Intentional fall-through to reuse case 2 clearing
 		case 2:
 			clearbuf((void *)frameplace,(xdim*ydim)>>2,0L);
 			break;
@@ -8506,6 +8511,9 @@ void preparemirror(long dax, long day, long daz,
                    short *tang)
 {
 	long i, j, x, y, dx, dy;
+	(void)daz;     // Parameters currently unused but kept for API compatibility
+	(void)dahoriz; // Parameters currently unused but kept for API compatibility
+	(void)dasector;  // Parameter currently unused, kept for API compatibility
 
 	x = wall[dawall].x; dx = wall[wall[dawall].point2].x-x;
 	y = wall[dawall].y; dy = wall[wall[dawall].point2].y-y;
