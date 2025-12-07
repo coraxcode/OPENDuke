@@ -63,6 +63,7 @@ void hlineasm4(long _count, unsigned long unused_source, long _shade, unsigned l
     register unsigned char *pal = (unsigned char *) pal_eax;
     register long _asm1 = asm1;
     register long _asm2 = asm2;
+    (void)unused_source; // Prevent unused parameter warning
 
     while (count) {
 	    source = i5 >> shifter;
@@ -471,6 +472,7 @@ void spritevline(long i1, unsigned long i2, long i3, unsigned long i4, long i5, 
 {
     unsigned char *source = (unsigned char *)i5;
     unsigned char *dest = (unsigned char *)i6;
+    (void)i3; // Parameter not used in C version
 
 dumblabel1:
     i2 += smach_eax;
@@ -502,6 +504,7 @@ static long msmach5_eax;
 static long msmach_ecx;
 void msetupspritevline(long i1, long i2, long i3, long i4, long i5, long i6)
 {
+    (void)i6; // Parameter not used in C version
     mspal_eax = i1;
     msmach_eax = (i5<<16);
     msmach2_eax = (i5>>16)+i2;
@@ -514,6 +517,7 @@ void mspritevline(long i1, long i2, long i3, long i4, long i5, long i6)
 {
     unsigned char *source = (unsigned char *)i5;
     unsigned char *dest = (unsigned char *)i6;
+    (void)i3; // Parameter not used in C version
 
 msdumblabel1:
     i2 += smach_eax;
@@ -548,6 +552,7 @@ unsigned long tsmach_eax3;
 unsigned long tsmach_ecx;
 void tsetupspritevline(long i1, long i2, long i3, long i4, long i5, long i6)
 {
+        (void)i6; // Parameter not used in C version
 	tspal = i1;
 	tsmach_eax1 = i5 << 16;
 	tsmach_eax2 = (i5 >> 16) + i2;
@@ -568,7 +573,7 @@ void tspritevline(long i1, long i2, long i3, unsigned long i4, long i5, long i6)
 			if (i4 < (i4 - tsmach_ecx)) adder = tsmach_eax3;
 			i1 = *((unsigned char *)i5);
 			i2 += tsmach_eax1;
-			if (i2 < (i2 - tsmach_eax1)) i5++;
+			if ((unsigned long)i2 < ((unsigned long)i2 - tsmach_eax1)) i5++; // Compare as unsigned to detect overflow
 			i5 += adder;
 			// tstartsvline
 			if (i1 != 0xff)
@@ -605,6 +610,7 @@ static unsigned char mshift_al = 26;
 static unsigned char mshift_bl = 6;
 void mhlineskipmodify(long i1, unsigned long i2, unsigned long i3, long i4, long i5, long i6)
 {
+    (void)i4; // Parameter not used in C version
     unsigned long ebx;
     int counter = (i3>>16);
     while (counter >= 0)
@@ -651,6 +657,7 @@ static unsigned char tshift_bl = 6;
 void thlineskipmodify(long i1, unsigned long i2, unsigned long i3, long i4, long i5, long i6)
 {
     unsigned long ebx;
+    (void)i4; // Parameter not used in C version
     int counter = (i3>>16);
     while (counter >= 0)
     {
@@ -781,6 +788,8 @@ void settransreverse(void)
 /* #pragma aux setupdrawslab parm [eax][ebx] */
 long setupdrawslab(long i1, long i2)
 {
+    (void)i1; // Parameters not used in C fallback
+    (void)i2;
     long retval = 0;
     /*
     __asm__ __volatile__ (
@@ -816,6 +825,12 @@ _asm_setupdrawslab:
 /* #pragma aux drawslab parm [eax][ebx][ecx][edx][esi][edi] */
 long drawslab(long i1, long i2, long i3, long i4, long i5, long i6)
 {
+    (void)i1; // Parameters not used in C fallback
+    (void)i2;
+    (void)i3;
+    (void)i4;
+    (void)i5;
+    (void)i6;
     long retval = 0;
     /*
     __asm__ __volatile__ (
@@ -1032,6 +1047,12 @@ voxskipslab5:
 /* #pragma aux stretchhline parm [eax][ebx][ecx][edx][esi][edi] */
 long stretchhline(long i1, long i2, long i3, long i4, long i5, long i6)
 {
+    (void)i1; // Parameters not used in C fallback
+    (void)i2;
+    (void)i3;
+    (void)i4;
+    (void)i5;
+    (void)i6;
     long retval = 0;
     /*
     __asm__ __volatile__ (
