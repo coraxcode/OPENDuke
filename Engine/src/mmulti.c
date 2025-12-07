@@ -649,7 +649,7 @@ void deinit_network_transport(gcomtype *gcom)
 #define CLIENT_POLL_DELAY 3000  /* ms between pings at peer-to-peer startup. */
 #define HEADER_PEER_GREETING 245
 
-static sockettype udpsocket = -1;
+static sockettype udpsocket = (sockettype)-1; // Explicit invalid socket value
 static short udpport = BUILD_DEFAULT_UDP_PORT;
 
 static struct {
@@ -996,7 +996,7 @@ static int open_udp_socket(int ip, int port)
 	printf("Stun is currently %s\n", (g_bStun) ? "Enabled":"Disabled");
 
     udpsocket = socket(PF_INET, SOCK_DGRAM, IPPROTO_UDP);
-    if (udpsocket == -1)
+    if (udpsocket == (sockettype)-1)  // Compare using explicit invalid socket value
     {
         printf("socket creation failed: %s\n", netstrerror());
         return(0);
@@ -1578,13 +1578,13 @@ void deinit_network_transport(gcomtype *gcom)
         free(gcom);
     }
 
-    if (udpsocket != -1)
+    if (udpsocket != (sockettype)-1)
     {
         printf("  ...closing socket...\n");
         set_socket_blockmode(1);  /* block while socket drains. */
         shutdown(udpsocket, SOCKET_SHUTDOWN_BOTH);
         socketclose(udpsocket);
-        udpsocket = -1;
+        udpsocket = (sockettype)-1;  // Mark socket as invalid using sockettype
     }
 
     deinitialize_sockets();
@@ -1598,7 +1598,7 @@ void unstable_callcommit(void)
     int ip, i, rc;
     short port;
 
-    if (udpsocket == -1)
+    if (udpsocket == (sockettype)-1)  // Skip when socket is explicitly invalid
         return;
 
     process_udp_send_queue();
