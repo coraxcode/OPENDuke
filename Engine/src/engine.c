@@ -1614,7 +1614,7 @@ static int owallmost(short *mostbuf, long w, long z)
 
 	y = (scale(z,xdimenscale,iy1)<<4);
 	yinc = ((scale(z,xdimenscale,iy2)<<4)-y) / (ix2-ix1+1);
-	qinterpolatedown16short((long *)&mostbuf[ix1],ix2-ix1+1,y+(globalhoriz<<16),yinc);
+	qinterpolatedown16short((long)&mostbuf[ix1],ix2-ix1+1,y+(globalhoriz<<16),yinc); // Cast pointer to long to match qinterpolatedown16short
 
 	if (mostbuf[ix1] < 0) mostbuf[ix1] = 0;
 	if (mostbuf[ix1] > ydimen) mostbuf[ix1] = ydimen;
@@ -1766,7 +1766,7 @@ static int wallmost(short *mostbuf, long w, long sectnum, char dastat)
 
 	y = (scale(z1,xdimenscale,iy1)<<4);
 	yinc = ((scale(z2,xdimenscale,iy2)<<4)-y) / (ix2-ix1+1);
-	qinterpolatedown16short((long *)&mostbuf[ix1],ix2-ix1+1,y+(globalhoriz<<16),yinc);
+	qinterpolatedown16short((long)&mostbuf[ix1],ix2-ix1+1,y+(globalhoriz<<16),yinc); // Cast pointer to long to match qinterpolatedown16short
 
 	if (mostbuf[ix1] < 0) mostbuf[ix1] = 0;
 	if (mostbuf[ix1] > ydimen) mostbuf[ix1] = ydimen;
@@ -2590,14 +2590,14 @@ int loadboard(char *filename, long *daposx, long *daposy,
 		kread16(fil,&sect->floorstat);
 		kread16(fil,&sect->ceilingpicnum);
 		kread16(fil,&sect->ceilingheinum);
-		 kread8(fil,&sect->ceilingshade);
-		 kread8(fil,&sect->ceilingpal);
-		 kread8(fil,&sect->ceilingxpanning);
-		 kread8(fil,&sect->ceilingypanning);
+		 kread8(fil,(char *)&sect->ceilingshade);  // Fix pointer sign warning (signed char* to char*)
+		 kread8(fil,(char *)&sect->ceilingpal);   // Fix pointer sign warning (unsigned char* to char*)
+		 kread8(fil,(char *)&sect->ceilingxpanning); // Fix pointer sign warning (unsigned char* to char*)
+		 kread8(fil,(char *)&sect->ceilingypanning); // Fix pointer sign warning (unsigned char* to char*)
 		kread16(fil,&sect->floorpicnum);
 		kread16(fil,&sect->floorheinum);
-		 kread8(fil,&sect->floorshade);
-		 kread8(fil,&sect->floorpal);
+		 kread8(fil,(char *)&sect->floorshade); // Fix pointer sign warning (signed char* to char*)
+		 kread8(fil,(char *)&sect->floorpal);  // Fix pointer sign warning (unsigned char* to char*)
 		 kread8(fil,&sect->floorxpanning);
 		 kread8(fil,&sect->floorypanning);
 		 kread8(fil,&sect->visibility);
@@ -5166,7 +5166,7 @@ static void drawsprite (long snum)
 			{
 				yinc = divscale16(ysi[zz]-ysi[z],xsi[zz]-xsi[z]);
 				y = ysi[z] + mulscale16((dax1<<16)-xsi[z],yinc);
-				qinterpolatedown16short((long *)(&uwall[dax1]),dax2-dax1,y,yinc);
+				qinterpolatedown16short((long)&uwall[dax1],dax2-dax1,y,yinc); // Cast pointer to long for uwall buffer address
 			}
 		}
 
@@ -5181,7 +5181,7 @@ static void drawsprite (long snum)
 			{
 				yinc = divscale16(ysi[zz]-ysi[z],xsi[zz]-xsi[z]);
 				y = ysi[zz] + mulscale16((dax1<<16)-xsi[zz],yinc);
-				qinterpolatedown16short((long *)(&dwall[dax1]),dax2-dax1,y,yinc);
+				qinterpolatedown16short((long)&dwall[dax1],dax2-dax1,y,yinc); // Cast pointer to long for dwall buffer address
 			}
 		}
 
