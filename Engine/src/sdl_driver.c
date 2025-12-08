@@ -504,7 +504,7 @@ static void init_new_res_vars(int davidoption)
     xdim = xres = surface->w;
     ydim = yres = surface->h;
 
-	printf("init_new_res_vars %d %d\n",xdim,ydim);
+	printf("init_new_res_vars %ld %ld\n", xdim, ydim); // Use %ld for long variables
 
     bytesperline = surface->w;
     vesachecked = 1;
@@ -1440,7 +1440,7 @@ int _setgamemode(char davidoption, long daxdim, long daydim)
 
     if (daxdim > MAXXDIM || daydim > MAXYDIM)
     {
-		printf("%d x %d is too big. Changed to %d x %d\n", daxdim, daydim, MAXXDIM,MAXYDIM);
+		printf("%ld x %ld is too big. Changed to %ld x %ld\n", daxdim, daydim, (long)MAXXDIM, (long)MAXYDIM); // Use %ld for long values
 	    daxdim = MAXXDIM;
 	    daydim = MAXYDIM;
     } 
@@ -1456,7 +1456,7 @@ int _setgamemode(char davidoption, long daxdim, long daydim)
 
 	if(!validated)
     {
-		printf("%d x %d unsupported. Changed to 640 x 480\n", daxdim, daydim);
+		printf("%ld x %ld unsupported. Changed to 640 x 480\n", daxdim, daydim); // Use %ld for long values
 	    daxdim = 640;
 	    daydim = 480;
     }
@@ -1762,7 +1762,7 @@ void getvalidvesamodes(void)
     vidoption = 1;  /* !!! tmp */
 
         /* fill in the standard resolutions... */
-    for (i = 0; i < sizeof (stdres) / sizeof (stdres[0]); i++)
+    for (i = 0; i < (int)(sizeof (stdres) / sizeof (stdres[0])); i++) // Cast to int for comparison
         add_vesa_mode("standard", stdres[i][0], stdres[i][1]);
 
          /* Anything the hardware can specifically do is added now... */
@@ -1800,6 +1800,7 @@ int VBE_setPalette(long start, long num, char *palettebuffer)
     SDL_Color *sdlp = &fmt_swap[start];
     char *p = palettebuffer;
     int i;
+    const long max_colors = (long)(sizeof (fmt_swap) / sizeof (SDL_Color)); // Max valid entries
 
 #if (defined USE_OPENGL)
     int gl = using_opengl();
@@ -1817,7 +1818,7 @@ int VBE_setPalette(long start, long num, char *palettebuffer)
     } /* if */
 #endif
 
-    assert( (start + num) <= (sizeof (fmt_swap) / sizeof (SDL_Color)) );
+    assert((start >= 0) && (num >= 0) && ((start + num) <= max_colors)); // Use long for all terms
 
     for (i = 0; i < num; i++)
     {
