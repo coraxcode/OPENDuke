@@ -379,6 +379,7 @@ int unstable_getoutputcirclesize(void)
 
 void unstable_setsocket(short newsocket)
 {
+    (void)newsocket;  // Parameter intentionally unused
 }
 
 
@@ -611,6 +612,9 @@ void deinit_network_transport(gcomtype *gcom)
 
 #if PLATFORM_WIN32
 #  include <winsock.h>
+#  undef EAGAIN        // Undefine to avoid macro redefinition warning
+#  undef EWOULDBLOCK   // Undefine to avoid macro redefinition warning
+#  undef ECONNREFUSED  // Undefine to avoid macro redefinition warning
 #  define EAGAIN WSAEWOULDBLOCK
 #  define EWOULDBLOCK WSAEWOULDBLOCK
 #  define ECONNREFUSED WSAECONNRESET
@@ -667,6 +671,7 @@ static struct {
 volatile int ctrlc_pressed = 0;
 static void siginthandler(int sigint)
 {
+    (void)sigint;  // Parameter intentionally unused
     ctrlc_pressed = 1;
 }
 
