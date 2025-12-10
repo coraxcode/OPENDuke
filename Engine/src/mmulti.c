@@ -167,6 +167,10 @@ void unstable_initmultiplayers(char damultioption, char dacomrateoption, char da
 {
 	long i;
 
+        (void)damultioption;     // Parameter kept for API compatibility, unused by design
+        (void)dacomrateoption;   // Parameter kept for API compatibility, unused by design
+        (void)dapriority;        // Parameter kept for API compatibility, unused by design
+
 	unstable_initcrc();
 	for(i=0;i<MAXPLAYERS;i++)
 	{
@@ -331,6 +335,9 @@ void unstable_sendpacket(long other, char *bufptr, long messleng)
 
 void unstable_setpackettimeout(long datimeoutcount, long daresendagaincount)
 {
+        (void)datimeoutcount;     // Timeout tuning disabled, parameter kept for compatibility
+        (void)daresendagaincount; // Resend tuning disabled, parameter kept for compatibility
+
 	// Don't do this it keeps '/f4' from working
 	// Though /f4 feels weird on my mouse.... slugish is the word...
 	/*
