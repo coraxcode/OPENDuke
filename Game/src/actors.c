@@ -449,7 +449,7 @@ void hitradius( short i, long  r, long  hp1, long  hp2, long  hp3, long  hp4 )
     long d, q, x1, y1;
     long sectcnt, sectend, dasect, startwall, endwall, nextsect;
     short j,k,p,x,nextj,sect;
-    char statlist[] = {0,1,6,10,12,2,5};
+    unsigned char statlist[] = {0,1,6,10,12,2,5}; // Use unsigned char to index arrays
     short *tempshort = (short *)tempbuf;
 
     s = &sprite[i];
@@ -623,11 +623,13 @@ void hitradius( short i, long  r, long  hp1, long  hp2, long  hp3, long  hp4 )
 }
 
 
-movesprite(short spritenum, long xchange, long ychange, long zchange, unsigned long cliptype)
+int movesprite(short spritenum, long xchange, long ychange, long zchange, unsigned long cliptype)
 {
     long daz,h, oldx, oldy;
     short retval, dasectnum, a, cd;
     char bg;
+
+    (void)sizeof(a);    // Use 'a' to avoid unused variable warning
 
     bg = badguy(&sprite[spritenum]);
 
