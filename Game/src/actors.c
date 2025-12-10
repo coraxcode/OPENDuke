@@ -810,7 +810,7 @@ void guts(spritetype *s,short gtype, short n, short p)
 void gutsdir(spritetype *s,short gtype, short n, short p)
 {
     long gutz,floorz;
-    short i,a,j;
+    short a, j;          // 'i' removed, it was never used
     char sx,sy;
 
     if(badguy(s) && s->xrepeat < 16)
@@ -829,7 +829,7 @@ void gutsdir(spritetype *s,short gtype, short n, short p)
     for(j=0;j<n;j++)
     {
         a = TRAND&2047;
-        i = EGS(s->sectnum,s->x,s->y,gutz,gtype,-32,sx,sy,a,256+(TRAND&127),-512-(TRAND&2047),ps[p].i,5);
+        EGS(s->sectnum,s->x,s->y,gutz,gtype,-32,sx,sy,a,256+(TRAND&127),-512-(TRAND&2047),ps[p].i,5);
     }
 }
 
@@ -1012,7 +1012,7 @@ short ifhitsectors(short sectnum)
 
 short ifhitbyweapon(short sn)
 {
-    short j, k, p;
+    short j, p;         // 'k' removed, it was never used
     spritetype *npc;
 
     if( hittype[sn].extra >= 0 )
