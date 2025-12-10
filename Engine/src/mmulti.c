@@ -1041,6 +1041,8 @@ static int open_udp_socket(int ip, int port)
 /* server init. */
 static int wait_for_other_players(gcomtype *gcom, int myip)
 {
+    (void)gcom;   // Mark parameter as unused to avoid compiler warning
+    (void)myip;   // Mark parameter as unused to avoid compiler warning
     printf("Server code NOT implemented!\n");
     return(0);
 }
@@ -1048,6 +1050,8 @@ static int wait_for_other_players(gcomtype *gcom, int myip)
 /* client init. */
 static int connect_to_server(gcomtype *gcom, int myip)
 {
+    (void)gcom;   // Mark parameter as unused to avoid compiler warning
+    (void)myip;   // Mark parameter as unused to avoid compiler warning
     printf("Client code NOT implemented!\n");
     return(0);
 }
