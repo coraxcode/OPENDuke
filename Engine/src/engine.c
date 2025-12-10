@@ -6958,6 +6958,7 @@ void draw2dgrid(long posxe, long posye, short ange, long zoome, short gride)
 			koutp(0x3ce,0x8);
                         #endif
                         templong = ((yp1*640+pageoffset)>>3)+(long)_getVideoBase();
+                        (void)templong;  // Use variable to avoid unused-but-set warning on non-DOS builds
 			tempy = yp2-yp1+1;
 			mask = 0;
 			xp1 = 320-mulscale14(posxe+131072,zoome);
