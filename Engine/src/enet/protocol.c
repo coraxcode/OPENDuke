@@ -263,6 +263,8 @@ enet_protocol_handle_send_reliable (ENetHost * host, ENetPeer * peer, const ENet
 {
     ENetPacket * packet;
 
+    (void)host;  // Parameter intentionally unused in this handler
+
     if (command -> header.commandLength <= sizeof (ENetProtocolSendReliable) ||
         command -> header.channelID >= peer -> channelCount ||
         peer -> state != ENET_PEER_STATE_CONNECTED)
@@ -304,6 +306,8 @@ enet_protocol_handle_send_fragment (ENetHost * host, ENetPeer * peer, const ENet
     ENetChannel * channel;
     ENetListIterator currentCommand;
     ENetIncomingCommand * startCommand;
+
+    (void)host;  // Parameter intentionally unused in this handler
 
     if (command -> header.commandLength <= sizeof (ENetProtocolSendFragment) ||
         command -> header.channelID >= peer -> channelCount ||
@@ -374,6 +378,9 @@ enet_protocol_handle_send_fragment (ENetHost * host, ENetPeer * peer, const ENet
 static void
 enet_protocol_handle_ping (ENetHost * host, ENetPeer * peer, const ENetProtocol * command)
 {
+    (void)host;  // Parameter intentionally unused in this handler
+    (void)peer;  // Parameter intentionally unused in this handler
+
     if (command -> header.commandLength < sizeof (ENetProtocolPing))
       return;
 }
@@ -404,6 +411,7 @@ enet_protocol_handle_bandwidth_limit (ENetHost * host, ENetPeer * peer, const EN
 static void
 enet_protocol_handle_throttle_configure (ENetHost * host, ENetPeer * peer, const ENetProtocol * command)
 {
+    (void)host;  // Parameter intentionally unused in this handler
     if (command -> header.commandLength < sizeof (ENetProtocolThrottleConfigure))
       return;
 
