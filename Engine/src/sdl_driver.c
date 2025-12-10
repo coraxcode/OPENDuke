@@ -844,6 +844,7 @@ static int root_sdl_event_filter(const SDL_Event *event)
             // FIX_00003: Pause mode is now fully responsive - (Thx to Jonathon Fowler tips)
 			if(event->key.keysym.sym == SDLK_PAUSE)
 				break;
+            /* fall through */  // Intentional fall-through for non-pause keyup
         case SDL_KEYDOWN:
             return(sdl_key_filter(event));
         case SDL_JOYBUTTONDOWN:
@@ -1403,6 +1404,7 @@ int setvesa(long x, long y)
 // Capture BMP of the current frame
 int screencapture(char *filename, char inverseit)
 {
+    (void)inverseit; // Parameter kept for compatibility, intentionally unused
 //  FIX_00006: better naming system for screenshots + message when pic is taken. 
 //  Use ./screenshots folder. Screenshot code rerwritten. Faster and
 //  makes smaller files. Doesn't freeze or lag the game anymore.
@@ -1948,8 +1950,8 @@ static unsigned char mirrorcolor = 0;
 
 void _updateScreenRect(long x, long y, long w, long h)
 {
-    if (renderer == RENDERER_SOFTWARE)
-		if(r_colorfix == 0)
+    if (renderer == RENDERER_SOFTWARE) { // Only update when using software renderer
+		if (r_colorfix == 0)
 		{
 			 SDL_UpdateRect(surface, x, y, w, h);
 		}
@@ -1958,6 +1960,7 @@ void _updateScreenRect(long x, long y, long w, long h)
 			SDL_BlitSurface(surface, NULL, windowSurface, NULL);//Surface blits to window with proper color depth -Radar
 			SDL_UpdateRect(windowSurface, x, y, w, h);
 		}
+	}
 } /* _updatescreenrect */
 
 
@@ -2151,8 +2154,9 @@ void drawline16(long XStart, long YStart, long XEnd, long YEnd, char Color)
     char *ScreenPtr;
     long dx, dy;
 
-    if (SDL_MUSTLOCK(surface))
+    if (SDL_MUSTLOCK(surface)) { // Lock surface conditionally
         SDL_LockSurface(surface);
+        }
 
 	dx = XEnd-XStart; dy = YEnd-YStart;
 	if (dx >= 0)
@@ -2335,6 +2339,7 @@ void *_getVideoBase(void)
 
 void setactivepage(long dapagenum)
 {
+    (void)dapagenum; // Parameter kept for API compatibility, intentionally unused
 	/* !!! Is this really still needed? - DDOI */
     /*fprintf(stderr, "%s, line %d; setactivepage(): STUB.\n", __FILE__, __LINE__);*/
 } /* setactivepage */
