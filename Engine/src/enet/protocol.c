@@ -281,6 +281,8 @@ static void
 enet_protocol_handle_send_unreliable (ENetHost * host, ENetPeer * peer, const ENetProtocol * command)
 {
     ENetPacket * packet;
+    
+    (void)host;  // Parameter intentionally unused in this handler
 
     if (command -> header.commandLength <= sizeof (ENetProtocolSendUnreliable) ||
         command -> header.channelID >= peer -> channelCount ||
@@ -423,6 +425,7 @@ enet_protocol_handle_throttle_configure (ENetHost * host, ENetPeer * peer, const
 static void
 enet_protocol_handle_disconnect (ENetHost * host, ENetPeer * peer, const ENetProtocol * command)
 {
+    (void)host;  // Parameter intentionally unused in this handler
     if (command -> header.commandLength < sizeof (ENetProtocolDisconnect))
       return;
 
@@ -716,6 +719,7 @@ enet_protocol_handle_incoming_commands (ENetHost * host, ENetEvent * event)
            case ENET_PEER_STATE_ACKNOWLEDGING_DISCONNECT:
               if (command -> header.command != ENET_PROTOCOL_COMMAND_DISCONNECT)
                 break;
+                /* fall through */  // Intentional fall-through to default for disconnect acknowledgement
 
            default:   
               enet_peer_queue_acknowledgement (peer, command, header -> sentTime);        
@@ -905,6 +909,8 @@ enet_protocol_check_timeouts (ENetHost * host, ENetPeer * peer, ENetEvent * even
 {
     ENetOutgoingCommand * outgoingCommand;
     ENetListIterator currentCommand;
+
+    (void)host;  // Parameter intentionally unused in this routine
 
     currentCommand = enet_list_begin (& peer -> sentReliableCommands);
 
