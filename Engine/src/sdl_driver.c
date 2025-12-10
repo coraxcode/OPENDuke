@@ -675,6 +675,7 @@ static __inline int sdl_mouse_button_filter(SDL_MouseButtonEvent const *event)
 static int sdl_mouse_motion_filter(SDL_Event const *event)
 {
 	static int i = 0;
+        (void)i;  // Variable kept for potential future use; currently unused
 
     if (surface == NULL)
 		return(0);
@@ -1392,6 +1393,8 @@ void _platform_init(int argc, char **argv, const char *title, const char *icon)
 
 int setvesa(long x, long y)
 {
+    (void)x;  // Parameter intentionally unused; kept for API compatibility
+    (void)y;  // Parameter intentionally unused; kept for API compatibility
 	Error(EXIT_FAILURE, "setvesa() called in SDL driver\n");
     return(0);
 } /* setvesa */
