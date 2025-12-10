@@ -310,9 +310,9 @@ static SDL_TimerID primary_timer = NULL;
 /* so we can make use of setcolor16()... - DDOI */
 static unsigned char drawpixel_color=0;
 
-static void sdl_silence_unused_timer(void)
+static void sdl_use_primary_timer(void)
 {
-    (void)primary_timer;  // Keep variable defined but silence unused-variable warning
+    (void)primary_timer;  // Silence unused global timer variable
 }
 
 static unsigned int scancodes[SDLK_LAST];
