@@ -494,6 +494,8 @@ int using_opengl(void)
 static char screenalloctype = 255;
 static void init_new_res_vars(int davidoption)
 {
+    (void)davidoption;  // Parameter intentionally unused in current implementation
+
     int i = 0;
     int j = 0;
 
@@ -516,10 +518,12 @@ static void init_new_res_vars(int davidoption)
     if (renderer == RENDERER_OPENGL3D)
         frameplace = (long) NULL;
     else
+    {
 		// FIX_00083: Sporadic crash on fullscreen/window mode toggle
 		// frameoffset wasn't always updated fast enought. Build were using the old 
 		// pointer of frameoffset.  
         frameoffset = frameplace = (long) ( ((Uint8 *) surface->pixels) );
+    }
 
   	if (screen != NULL)
    	{
