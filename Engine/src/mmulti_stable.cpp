@@ -140,6 +140,7 @@ ADDRESS_STRUCT	allowed_addresses[MAX_PLAYERS];  /* only respond to these IPs. */
 volatile int sb_ctrlc_pressed = 0;
 static void sb_siginthandler(int sigint)
 {
+    (void)sigint;            // Silence unused parameter warning
     sb_ctrlc_pressed = 1;
 }
 
@@ -213,9 +214,13 @@ void cleanup(void);
 
 	void stable_initmultiplayers(char damultioption, char dacomrateoption, char dapriority)
 	{
+                (void)damultioption;       // Parameter currently unused (keep API)
+                (void)dacomrateoption;     // Parameter currently unused (keep API)
+                (void)dapriority;          // Parameter currently unused (keep API)
+
 		long i;
 		gcomtype *retval;
-		int k;
+		// int k;                  // Removed: unused local variable
 
 		// DO NOT DO THIS - it screws up the networking
 		//srand(enet_time_get_raw());
