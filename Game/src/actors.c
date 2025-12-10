@@ -704,8 +704,7 @@ int movesprite(short spritenum, long xchange, long ychange, long zchange, unsign
     daz = sprite[spritenum].z + ((zchange*TICSPERFRAME)>>3);
     if ((daz > hittype[spritenum].ceilingz) && (daz <= hittype[spritenum].floorz))
         sprite[spritenum].z = daz;
-    else
-        if (retval == 0)
+    else if (retval == 0)
             return(16384+dasectnum);
 
 	return(retval);
