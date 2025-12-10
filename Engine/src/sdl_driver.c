@@ -1205,6 +1205,8 @@ void _platform_init(int argc, char **argv, const char *title, const char *icon)
 	LARGE_INTEGER timeElapsed;
 	char dummyString[4096];
 
+    (void)&sdl_use_primary_timer; // Mark helper as used to silence unused-function warning
+
     _argc = argc;
     _argv = argv;
 
