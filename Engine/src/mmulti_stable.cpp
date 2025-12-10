@@ -463,8 +463,10 @@ void cleanup(void);
 
 	void stable_genericmultifunction(long other, char *bufptr, long messleng, long command)
 	{
-            (void)other;   // Parameter currently unused in stable implementation
-            (void)bufptr;  // Parameter currently unused in stable implementation
+            (void)other;    // Parameter currently unused in stable implementation
+            (void)bufptr;   // Parameter currently unused in stable implementation
+            (void)messleng; // Parameter currently unused in stable implementation
+            (void)command;  // Parameter currently unused in stable implementation
 	}
 
 //
@@ -495,7 +497,7 @@ int connect_to_everyone()
 		{
 			for(i = 0; i < gcom->numplayers-1; ++i)
 			{
-				ENetPeer *peer;
+				// ENetPeer *peer; // Unused local variable, commented out to silence warning
 				char szHostName[64];
 	
 	
