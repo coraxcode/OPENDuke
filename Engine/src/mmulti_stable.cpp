@@ -348,6 +348,8 @@ void cleanup(void);
 
 	void stable_setpackettimeout(long datimeoutcount, long daresendagaincount)
 	{
+                (void)datimeoutcount;      // Parameters currently unused (keep API)
+                (void)daresendagaincount;  // Parameters currently unused (keep API)
 		//NOT USED for anything other than '/f4'
 	}
 
@@ -394,6 +396,7 @@ void cleanup(void);
 
 	void stable_setsocket(short newsocket)
 	{
+            (void)newsocket;  // Parameter intentionally unused in stable implementation
 	}
 
 
@@ -460,7 +463,8 @@ void cleanup(void);
 
 	void stable_genericmultifunction(long other, char *bufptr, long messleng, long command)
 	{
-
+            (void)other;   // Parameter currently unused in stable implementation
+            (void)bufptr;  // Parameter currently unused in stable implementation
 	}
 
 //
